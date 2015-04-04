@@ -153,8 +153,9 @@ public class ActionCam extends OrthographicCamera {
     }
 
     public void follow(Body b) {
-        Vector2 pos = b.getPosition(), vel = b.getLinearVelocity();
-        // stage.getCamera().project(pos);
+        Vector3 pos = new Vector3(b.getPosition(), 0);
+        Vector2 vel = b.getLinearVelocity();
+        Globals.stage.getCamera().unproject(pos);
         position.x = pos.x * Globals.PIXELS_PER_METER - vel.x;// *50;
         position.y = pos.y * Globals.PIXELS_PER_METER - vel.y;
         if (shaking)

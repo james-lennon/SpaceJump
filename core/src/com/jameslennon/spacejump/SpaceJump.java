@@ -21,9 +21,6 @@ public class SpaceJump extends Game {
 	public void create () {
 	    screens = new HashMap<String, Screen>();
 
-        System.out.println(Gdx.files.internal(".").file().getAbsolutePath());
-        ;
-
         //Load Stuff
         setupScreens();
         UserData.load();

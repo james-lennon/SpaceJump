@@ -8,33 +8,35 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.jameslennon.spacejump.grid.GridMap;
-import com.jameslennon.spacejump.util.InputManager;
+import com.jameslennon.spacejump.grid.Planet;
+import com.jameslennon.spacejump.grid.Player;
 import com.jameslennon.spacejump.util.ActionCam;
 import com.jameslennon.spacejump.util.CollisionManager;
 import com.jameslennon.spacejump.util.Globals;
-import com.jameslennon.spacejump.util.LevelLoader;
-import com.jameslennon.spacejump.screens.AbstractScreen;
+import com.jameslennon.spacejump.util.InputManager;
 
 /**
  * Created by jameslennon on 3/21/15.
  */
 public class TestScreen extends AbstractScreen {
 
-    private OrthographicCamera cam;
-    private float padding = 200/Globals.PIXELS_PER_METER;
+//    private OrthographicCamera cam;
+    private float padding = 200 / Globals.PIXELS_PER_METER;
     private World worldInstance;
     private GridMap map;
-//    private Player player;
+    private Player player;
+    private ActionCam cam;
 
     private Box2DDebugRenderer debugRenderer;
 
-    public TestScreen(){
+    public TestScreen() {
         super();
 
         //Camera stuff
-        cam = new OrthographicCamera();
+//        cam = new OrthographicCamera();
+        cam = new ActionCam();
         stage.getViewport().setCamera(cam);
-        cam.zoom = 1/Globals.PIXELS_PER_METER;
+        cam.zoom = 1 / Globals.PIXELS_PER_METER;
 
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -43,7 +45,7 @@ public class TestScreen extends AbstractScreen {
     public void show() {
         super.show();
         if (worldInstance == null) {
-            worldInstance = new World(new Vector2(0,-10), true);
+            worldInstance = new World(new Vector2(0, 0), true);
             worldInstance.setContactListener(new CollisionManager());
         } else {
             Array<Body> bods = new Array<Body>();
@@ -59,11 +61,15 @@ public class TestScreen extends AbstractScreen {
         super.resize(width, height);
         Globals.stage = stage;
         Globals.inputManager = new InputManager();
+        Gdx.input.setInputProcessor(Globals.inputManager);
 
         //GridMap
-        if(map==null) {
+        if (map == null) {
             map = new GridMap();
             Globals.gridMap = map;
+            map.addItem(new Planet(0, 0, 50));
+            map.addItem(new Planet(8, 0, 50));
+            map.addItem(player = new Player(-90 / Globals.PIXELS_PER_METER, -150 / Globals.PIXELS_PER_METER));
 //            map.load(LevelLoader.parts.get(0));
 
 //            player = new Player(map.spawnPoint.x, map.spawnPoint.y);
@@ -75,7 +81,7 @@ public class TestScreen extends AbstractScreen {
     public void render(float delta) {
         super.render(delta);
 
-//        debugRenderer.render(worldInstance, cam.combined);
+        debugRenderer.render(worldInstance, cam.combined);
 
         //TODO: Input Management
 //        im.update();
@@ -89,8 +95,10 @@ public class TestScreen extends AbstractScreen {
         focusOnPlayer();
     }
 
-    private void focusOnPlayer(){
+    private void focusOnPlayer() {
+        cam.follow(player.getBody());
 //        Vector2 pos = player.getBody().getPosition();
+//        cam.position.set(0, 0, 0);
 
 //        float left = cam.position.x - cam.viewportWidth/2+padding, right = cam.position.x + cam.viewportWidth/2-padding;
 //        float bottom = cam.position.y - cam.viewportHeight/2+padding, top = cam.position.y + cam.viewportHeight/2-padding;
