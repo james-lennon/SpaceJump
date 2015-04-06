@@ -155,24 +155,24 @@ public class ActionCam extends OrthographicCamera {
     public void follow(Body b) {
         Vector3 pos = new Vector3(b.getPosition(), 0);
         Vector2 vel = b.getLinearVelocity();
-        Globals.stage.getCamera().unproject(pos);
-        position.x = pos.x * Globals.PIXELS_PER_METER - vel.x;// *50;
-        position.y = pos.y * Globals.PIXELS_PER_METER - vel.y;
+//        Globals.stage.getCamera().project(pos);
+        position.x = pos.x - vel.x;// *50;
+        position.y = pos.y - vel.y;
         if (shaking)
             processShake(delta);
-        // lerp.x = position.x + offsetX;
-        // lerp.y = position.y + offsetY;
+//        lerp.x = pos.x - vel.x;
+//        lerp.y = pos.y - vel.y;
         //
         // if (isFixed)
         // throw new IllegalStateException("A fixed camera can not move");
         //
         // if (shakeEnabled) {
-        // if (shaking) {
-        // processShake(delta);
-        // } else {
-        // super.position.lerp(lerp, smoothing);
-        //
-        // }
+//        if (shaking) {
+//            processShake(delta);
+//        } else {
+//            super.position.lerp(lerp, smoothing);
+//
+//        }
         // }
 
     }

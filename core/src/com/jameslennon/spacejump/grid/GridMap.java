@@ -3,6 +3,7 @@ package com.jameslennon.spacejump.grid;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.grid.Block;
 import com.jameslennon.spacejump.grid.GridItem;
@@ -90,8 +91,18 @@ public class GridMap {
     }
 
     public void addItem(GridItem gi) {
-        gi.show(Globals.stage);
+//        gi.show(Globals.stage);
         items.add(gi);
+    }
+
+    public void show(Stage s){
+        for (GridItem gi : items){
+            gi.show(s);
+        }
+    }
+
+    public void remove(){
+
     }
 
     public void removeItem(GridItem g) {

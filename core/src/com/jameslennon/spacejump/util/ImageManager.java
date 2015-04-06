@@ -9,6 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 public class ImageManager {
 
     public static Texture getImage(String name){
-        return new Texture(Gdx.files.internal("images/"+name+".png"));
+        return new Texture(Gdx.files.internal("img/"+name+".png"));
     }
 }

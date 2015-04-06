@@ -10,7 +10,8 @@ import com.jameslennon.spacejump.util.Globals;
 public class Attractor extends GridItem {
     private final static float G = 10;
 
-    private float mass, radius;
+    protected float mass;
+    protected float radius;
 
     public Attractor(float mass, float radius) {
         this.mass = mass;
@@ -23,9 +24,20 @@ public class Attractor extends GridItem {
         Body a = getBody(), b = Player.instance.getBody();
         float dist = a.getPosition().dst(b.getPosition());
         if (dist <= radius){
+            Vector2 planetDistance = b.getPosition().sub(a.getPosition());
+            float vecSum = Math.abs(planetDistance.x) + Math.abs(planetDistance.y);
+
             float magnitude = (mass * G)/(dist);
             Vector2 r = a.getPosition().sub(b.getPosition()).nor();
             b.applyForceToCenter(r.scl(magnitude), true);
         }
+    }
+
+    public float getForce(Vector2 pos){
+        float dist = pos.dst(getBody().getPosition());
+        if (dist <= radius) {
+            return (mass * G) / (dist);
+        }
+        return 0;
     }
 }
