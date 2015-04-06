@@ -109,15 +109,12 @@ public class TestScreen extends AbstractScreen {
     public void render(float delta) {
         super.render(delta);
 
-        float start = System.currentTimeMillis();
 //        cam.update();
 //        debugRenderer.render(worldInstance, cam.combined);
 
 
         float step = 1f / 60f;
         worldInstance.step(step, 6, 2);
-        System.out.println(System.currentTimeMillis() - start);
-        start = System.currentTimeMillis();
 //        if (delta <= step / 2) {
 //            worldInstance.step(1f / 60f, 6, 2);
 //        }

@@ -20,6 +20,7 @@ public class Planet extends Attractor {
 
 //    private Image outline;
     private float planetRadius;
+    private ShapeRenderer sr = new ShapeRenderer();
 
     public Planet(float x, float y, float r, int spikes) {
         super(20, 2.5f * r);
@@ -51,11 +52,11 @@ public class Planet extends Attractor {
         body = Globals.world.createBody(c);
         body.createFixture(fixture).setUserData(this);
 
-        for (int i=0; i<spikes; i++)addSpike();
+        for (int i=0; i<spikes; i++)addSpike(360.f * i/spikes);
     }
 
-    private void addSpike(){
-        float angle = MathUtils.random(0,360);
+    private void addSpike(float angle){
+//        float angle = MathUtils.random(0,360);
         Spike s = new Spike(this, angle);
         Globals.gridMap.addItem(s);
     }
@@ -79,7 +80,6 @@ public class Planet extends Attractor {
 //        outline.setPosition(getBody().getPosition().x - outline.getWidth() / 2,
 //                getBody().getPosition().y - outline.getHeight() / 2);
 
-        ShapeRenderer sr = new ShapeRenderer();
         sr.setProjectionMatrix(Globals.stage.getCamera().combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.WHITE);
