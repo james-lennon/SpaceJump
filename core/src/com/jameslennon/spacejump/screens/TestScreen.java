@@ -1,8 +1,6 @@
 package com.jameslennon.spacejump.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -11,9 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
 import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
-import com.jameslennon.spacejump.grid.Planet;
 import com.jameslennon.spacejump.grid.Player;
-import com.jameslennon.spacejump.grid.StartPlanet;
 import com.jameslennon.spacejump.util.ActionCam;
 import com.jameslennon.spacejump.util.CollisionManager;
 import com.jameslennon.spacejump.util.Globals;
@@ -26,7 +22,7 @@ public class TestScreen extends AbstractScreen {
 
     public static TestScreen instance;
 
-//    private OrthographicCamera cam;
+    //    private OrthographicCamera cam;
     private float padding = 200 / Globals.PIXELS_PER_METER;
     private World worldInstance;
     private GridMap map;
@@ -44,6 +40,7 @@ public class TestScreen extends AbstractScreen {
 //        cam = new OrthographicCamera();
         cam = new ActionCam();
         cm = new ComponentManager();
+        Globals.compManager = cm;
         stage.getViewport().setCamera(cam);
         cam.zoom = 1 / Globals.PIXELS_PER_METER;
 
@@ -57,14 +54,13 @@ public class TestScreen extends AbstractScreen {
         setup();
     }
 
-    public void setup(){
+    public void setup() {
         if (worldInstance == null) {
             worldInstance = new World(new Vector2(0, 0), true);
             worldInstance.setContactListener(new CollisionManager());
         } else {
             Array<Body> bods = new Array<Body>();
             worldInstance.getBodies(bods);
-            System.out.println(worldInstance.getBodyCount());
             for (Body b : bods) {
                 worldInstance.destroyBody(b);
 //                map.removeBody(b);
@@ -79,9 +75,9 @@ public class TestScreen extends AbstractScreen {
 //        map.addItem(new Planet(42, 0, 100, 3));
 //        map.addItem(new Planet(56, 0, 100, 3));
         cm.reset();
-        map.addItem(player = new Player(0, .2f * Globals.APP_HEIGHT/Globals.PIXELS_PER_METER));
+        map.addItem(player = new Player(0, .2f * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER));
 
-        if(Globals.stage!=null){
+        if (Globals.stage != null) {
             stage.clear();
             map.show(stage);
         }
@@ -126,6 +122,8 @@ public class TestScreen extends AbstractScreen {
 //            worldInstance.step(1f / 60f, 6, 2);
 //        }
 
+        if (player.isRemoved()) setup();
+
         Globals.gridMap.update();
         cm.update();
         focusOnPlayer();
@@ -134,7 +132,8 @@ public class TestScreen extends AbstractScreen {
     private void focusOnPlayer() {
 //        cam.follow(player.getBody());
 //        Vector2 pos = player.getBody().getPosition();
-        cam.position.set(player.getBody().getPosition().x, .5f * Globals.APP_HEIGHT/Globals.PIXELS_PER_METER, 0);
+        if (!player.isRemoved())
+            cam.position.set(player.getBody().getPosition().x, .5f * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER, 0);
 
 //        float left = cam.position.x - cam.viewportWidth/2+padding, right = cam.position.x + cam.viewportWidth/2-padding;
 //        float bottom = cam.position.y - cam.viewportHeight/2+padding, top = cam.position.y + cam.viewportHeight/2-padding;

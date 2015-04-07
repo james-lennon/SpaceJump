@@ -19,8 +19,6 @@ public class Planet extends Attractor {
 
     //    private Image outline;
     private float planetRadius;
-    private ShapeRenderer sr = new ShapeRenderer();
-    public static Color col = Color.BLACK;
 
     public Planet(float x, float y, float r, int spikes) {
         super(20, 2.5f * r);
@@ -82,13 +80,7 @@ public class Planet extends Attractor {
 //        outline.setPosition(getBody().getPosition().x - outline.getWidth() / 2,
 //                getBody().getPosition().y - outline.getHeight() / 2);
 
-        sr.setProjectionMatrix(Globals.stage.getCamera().combined);
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(col);
-        sr.circle(getBody().getPosition().x,
-                getBody().getPosition().y,
-                radius);
-        sr.end();
+
     }
 
     public float getPlanetRadius() {

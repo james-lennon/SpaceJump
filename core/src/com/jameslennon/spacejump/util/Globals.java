@@ -1,11 +1,13 @@
 package com.jameslennon.spacejump.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.jameslennon.spacejump.comps.ComponentLoader;
+import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
 import com.jameslennon.spacejump.util.InputManager;
 import com.jameslennon.spacejump.SpaceJump;
@@ -27,6 +29,9 @@ public class Globals {
     public static Skin skin = new Skin(Gdx.files.internal("layout/uiskin.json"));
     public static InputManager inputManager = new InputManager();
     public static ComponentLoader componentLoader = new ComponentLoader();
+
+    public static BitmapFont bigFont, smallFont;
+    public static ComponentManager compManager;
 
     public static void scaleImage(Image img){
         img.setSize(img.getWidth()/Globals.PIXELS_PER_METER, img.getHeight()/Globals.PIXELS_PER_METER);

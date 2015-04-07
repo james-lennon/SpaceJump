@@ -3,6 +3,7 @@ package com.jameslennon.spacejump.comps;
 import com.badlogic.gdx.utils.JsonValue;
 import com.jameslennon.spacejump.grid.GridItem;
 import com.jameslennon.spacejump.grid.GridMap;
+import com.jameslennon.spacejump.grid.Hole;
 import com.jameslennon.spacejump.grid.Planet;
 import com.jameslennon.spacejump.util.Globals;
 
@@ -35,12 +36,20 @@ public class Component {
 
     private GridItem inflate(JsonValue value) {
         String type = value.getString("type");
+        float x = offset + (float) value.getDouble("x") * WIDTH,
+                y = (float) value.getDouble("y") * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER;
         if (type.equals("p")) {
-            return new Planet(offset + (float) value.getDouble("x") * WIDTH,
-                    (float) value.getDouble("y") * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER,
-                    (float) value.getDouble("r"), 0);
+            return new Planet(x, y, (float) value.getDouble("r"), 0);
+        } else if (type.equals("h")) {
+            return new Hole(x,y);
         }
         return null;
     }
 
+    public void remove() {
+        for (GridItem gi : items){
+            gi.die();
+        }
+        items.clear();
+    }
 }

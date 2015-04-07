@@ -30,6 +30,7 @@ public abstract class GridItem {
     }
 
     public void update() {
+        if (body==null)return;
         if (health <= 0) {
             die();
         }
@@ -52,7 +53,6 @@ public abstract class GridItem {
             img.setVisible(false);
             img.remove();
             Globals.gridMap.removeItem(this);
-            Globals.gridMap.removeBody(getBody());
             removed = true;
         }
     }

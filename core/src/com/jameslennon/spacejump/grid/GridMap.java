@@ -5,9 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jameslennon.spacejump.util.Globals;
-import com.jameslennon.spacejump.grid.Block;
-import com.jameslennon.spacejump.grid.GridItem;
-import com.jameslennon.spacejump.grid.Level;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,7 @@ public class GridMap {
         for (int i = -1; i <= level.getWidth(); i++) {
             for (int j = -1; j <= level.getHeight(); j++) {
                 float w = Globals.TILE_WIDTH;
-                float x = (i * w)/Globals.PIXELS_PER_METER, y = (j * w)/Globals.PIXELS_PER_METER;
+                float x = (i * w) / Globals.PIXELS_PER_METER, y = (j * w) / Globals.PIXELS_PER_METER;
                 addItem(new Tile(x, y));
 
                 GridItem gi = null;
@@ -43,7 +40,7 @@ public class GridMap {
                         gi = new Block(x, y, level, i, j);
                         break;
                     case 's':
-                        spawnPoint = new Vector2(x,y);
+                        spawnPoint = new Vector2(x, y);
                         break;
 
                     default:
@@ -70,7 +67,8 @@ public class GridMap {
         }
         bodiesToRemove.clear();
         for (int i = 0; i < items.size(); i++) {
-            items.get(i).update();
+            if (!items.get(i).isRemoved())
+                items.get(i).update();
 
             //TODO: remove items off screen
             /*
@@ -95,24 +93,25 @@ public class GridMap {
         items.add(gi);
     }
 
-    public void show(Stage s){
-        for (GridItem gi : items){
+    public void show(Stage s) {
+        for (GridItem gi : items) {
             gi.show(s);
         }
     }
 
-    public void remove(){
+    public void remove() {
 
     }
 
     public void removeItem(GridItem g) {
         itemsToRemove.add(g);
-        bodiesToRemove.add(g.body);
+        removeBody(g.body);
+        g.body = null;
         g.img.remove();
         g.setRemoved(true);
     }
 
-    public void removeBody(Body body) {
+    private void removeBody(Body body) {
         if (body != null)
             bodiesToRemove.add(body);
     }

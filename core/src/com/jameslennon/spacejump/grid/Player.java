@@ -7,9 +7,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.util.ImageManager;
 import com.jameslennon.spacejump.util.ParticleEffectActor;
@@ -22,16 +25,19 @@ public class Player extends GridItem {
     public static Player instance;
     public static Color col = Color.BLACK;
 
-    private final float width = 30;
+    private final float width = 30, padding = 50f / Globals.PIXELS_PER_METER;
     private float speed = 10, jumpPower = 5; //10;
     private boolean isOnPlanet, isJumping;
     private Planet ground;
-    private long startJump, jumpTime = 500, groundTime;
-    private ParticleEffectActor pea;
+    private long startJump, jumpTime = 500, groundTime, orbitTime, boostTime;
+    private ParticleEffectActor pea1, pea2;
+    private boolean isInOrbit;
+    private float orbitAngle;
+    private Attractor pivot;
 
     public Player(float x, float y) {
         instance = this;
-        isOnPlanet = isJumping = false;
+        isOnPlanet = isJumping = isInOrbit = false;
 
         img = new Image(ImageManager.getImage("block"));
         img.setSize(width / Globals.PIXELS_PER_METER, width / Globals.PIXELS_PER_METER);
@@ -41,13 +47,14 @@ public class Player extends GridItem {
         ParticleEffect effect = new ParticleEffect();
         effect.load(Gdx.files.internal("particle/trail.particle"), Gdx.files.internal("img"));
         effect.getEmitters().get(0).getScale().setHigh(4 / Globals.PIXELS_PER_METER);
-        pea = new ParticleEffectActor(effect, 0, 0);
+        pea1 = new ParticleEffectActor(effect, 0, 0);
+        pea2 = new ParticleEffectActor(effect, 0, 0);
 
         BodyDef c = new BodyDef();
         c.type = BodyDef.BodyType.DynamicBody;
         c.position.set(new Vector2((float) x, (float) y));
         // c.linearDamping = damp;
-        c.linearDamping = 0;
+        c.linearDamping = .2f;
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / Globals.PIXELS_PER_METER / 2, width / Globals.PIXELS_PER_METER / 2);
         FixtureDef fixture = new FixtureDef();
@@ -65,18 +72,29 @@ public class Player extends GridItem {
     @Override
     public void show(Stage s) {
         super.show(s);
-        s.addActor(pea);
+        s.addActor(pea1);
+        s.addActor(pea2);
     }
 
     @Override
     public void update() {
         super.update();
         img.setPosition(getBody().getPosition().x - img.getWidth() / 2, getBody().getPosition().y - img.getHeight() / 2);
-        pea.setPosition(getBody().getPosition().x, getBody().getPosition().y);
         img.setRotation(getBody().getAngle() * 180 / MathUtils.PI);
 
+        Vector2 pOff = new Vector2(0, img.getWidth() / 2f).rotateRad(getBody().getAngle() + MathUtils.PI / 4);
+        pea1.setPosition(getBody().getPosition().x + pOff.x, getBody().getPosition().y + pOff.y);
+        pOff.rotate(180);
+        pea2.setPosition(getBody().getPosition().x + pOff.x, getBody().getPosition().y + pOff.y);
+
+        float y = body.getPosition().y;
+        if (y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding) {
+            die();
+            return;
+        }
+
         Vector2 vel = getBody().getLinearVelocity();
-        if (ground != null) {
+        if (ground != null && ground.getBody()!=null) {
             Vector2 offset = new Vector2(getBody().getPosition()).sub(ground.getBody().getPosition());
             if (isOnPlanet) {
                 float offAngle = offset.angleRad() - MathUtils.PI / 2;
@@ -98,6 +116,15 @@ public class Player extends GridItem {
                 body.applyForceToCenter(jump, true);
             }
         }
+
+        if (isInOrbit) {
+            Vector2 offset = new Vector2(body.getPosition()).sub(pivot.getBody().getPosition());
+            if (MathUtils.isEqual(offset.angle(), orbitAngle, 3f) && System.currentTimeMillis() - orbitTime > 100) {
+                boost(15);
+                Globals.compManager.onBoost();
+                orbitTime = System.currentTimeMillis();
+            }
+        }
     }
 
     @Override
@@ -105,7 +132,9 @@ public class Player extends GridItem {
         if (other instanceof Planet) {
             isOnPlanet = true;
             ground = (Planet) other;
-            groundTime = System.currentTimeMillis();
+//            groundTime = System.currentTimeMillis();
+//            orbitAngle = new Vector2(body.getPosition()).sub(ground.getBody().getPosition()).angle();
+//            orbitTime = System.currentTimeMillis();
 //            ground.debug(true);
         }
     }
@@ -138,4 +167,42 @@ public class Player extends GridItem {
     public float getX() {
         return getBody().getPosition().x;
     }
+
+    public void enterOrbit(Attractor att) {
+        if (pivot == att) return;
+        isInOrbit = true;
+        pivot = att;
+
+        Vector2 offset = new Vector2(body.getPosition()).sub(pivot.getBody().getPosition());
+        orbitAngle = offset.angle();
+        orbitTime = System.currentTimeMillis();
+    }
+
+    public void exitOrbit(Attractor att) {
+        if (isInOrbit && att == pivot) {
+            isInOrbit = false;
+            pivot = null;
+        }
+    }
+
+    private void boost(float power) {
+        body.setLinearVelocity(new Vector2(0, 0));
+        body.applyLinearImpulse(new Vector2(power, 0), body.getPosition(), true);
+
+        Image circle = new Image(ImageManager.getImage("outline2"));
+        circle.setSize(width / Globals.PIXELS_PER_METER, width / Globals.PIXELS_PER_METER);
+        circle.setColor(col);
+        circle.setPosition(img.getX(), img.getY());
+        circle.addAction(Actions.fadeOut(.5f));
+        circle.addAction(Actions.scaleBy(6.0f, 6.0f, .5f));
+        Globals.stage.addActor(circle);
+
+        boostTime = System.currentTimeMillis();
+        body.getFixtureList().get(0).setRestitution(0);
+    }
+
+    public boolean isBoosting(){
+        return System.currentTimeMillis() - boostTime < 1000;
+    }
+
 }

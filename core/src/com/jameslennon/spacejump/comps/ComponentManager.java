@@ -14,9 +14,10 @@ public class ComponentManager {
 
     private ArrayDeque<Component> comps = new ArrayDeque<Component>();
     private int index;
-    private float padding = 300;
+    private float padding = 300/Globals.PIXELS_PER_METER;
 
     public void update(){
+        if (Player.instance.isRemoved())return;
         if (Player.instance.getX() >= index*Component.WIDTH - padding){
             addComp();
         }
@@ -33,7 +34,20 @@ public class ComponentManager {
     }
 
     private void addComp(){
-        comps.push(Globals.componentLoader.addComponent(0,index++,Globals.gridMap));
+        comps.add(Globals.componentLoader.addComponent(0, index++, Globals.gridMap));
     }
 
+    public void onBoost() {
+        float x = Player.instance.getX();
+        Component comp;
+        while (true){
+            comp = comps.peekLast();
+            if (comp !=null && comp.offset>=x && comp.offset < x+padding){
+                comp.remove();
+                comps.removeLast();
+            }else {
+                break;
+            }
+        }
+    }
 }
