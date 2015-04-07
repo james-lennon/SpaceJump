@@ -21,6 +21,7 @@ public class Spike extends GridItem {
         float scale = width / img.getWidth();
         img.setSize(img.getWidth() / Globals.PIXELS_PER_METER*scale, img.getHeight() / Globals.PIXELS_PER_METER*scale);
         img.setOrigin(img.getWidth()/2, img.getHeight()/2);
+        img.setColor(Planet.col);
 
         Vector2 pos = p.getBody().getPosition().add(new Vector2(0, p.getPlanetRadius()+img.getHeight()/2).rotate(degrees));
 

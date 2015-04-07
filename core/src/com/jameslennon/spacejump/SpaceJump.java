@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jameslennon.spacejump.screens.TestScreen;
+import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.util.ImageManager;
 import com.jameslennon.spacejump.util.UserData;
 
@@ -24,6 +25,7 @@ public class SpaceJump extends Game {
         //Load Stuff
         setupScreens();
         UserData.load();
+        Globals.componentLoader.load();
 
 
         setScreen("test");

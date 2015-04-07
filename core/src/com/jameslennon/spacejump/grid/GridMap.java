@@ -91,7 +91,7 @@ public class GridMap {
     }
 
     public void addItem(GridItem gi) {
-//        gi.show(Globals.stage);
+        gi.show(Globals.stage);
         items.add(gi);
     }
 

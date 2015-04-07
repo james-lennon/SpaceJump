@@ -1,12 +1,15 @@
 package com.jameslennon.spacejump.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Array;
+import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
 import com.jameslennon.spacejump.grid.Planet;
 import com.jameslennon.spacejump.grid.Player;
@@ -29,6 +32,7 @@ public class TestScreen extends AbstractScreen {
     private GridMap map;
     private Player player;
     private ActionCam cam;
+    private ComponentManager cm;
 
     private Box2DDebugRenderer debugRenderer;
 
@@ -39,6 +43,7 @@ public class TestScreen extends AbstractScreen {
         //Camera stuff
 //        cam = new OrthographicCamera();
         cam = new ActionCam();
+        cm = new ComponentManager();
         stage.getViewport().setCamera(cam);
         cam.zoom = 1 / Globals.PIXELS_PER_METER;
 
@@ -48,6 +53,7 @@ public class TestScreen extends AbstractScreen {
     @Override
     public void show() {
         super.show();
+        Globals.stage = stage;
         setup();
     }
 
@@ -67,28 +73,29 @@ public class TestScreen extends AbstractScreen {
         Globals.world = worldInstance;
         map = new GridMap();
         Globals.gridMap = map;
-        map.addItem(new StartPlanet(0, 0));
-        map.addItem(new Planet(12, 0, 100, 1));
-        map.addItem(new Planet(30, 0, 100, 2));
-        map.addItem(new Planet(42, 0, 100, 3));
-        map.addItem(new Planet(56, 0, 100, 3));
-//        map.addItem(new Planet(10, -4, 50));
-        map.addItem(player = new Player(-190 / Globals.PIXELS_PER_METER, -90 / Globals.PIXELS_PER_METER));
+//        map.addItem(new StartPlanet(0, 0));
+//        map.addItem(new Planet(12, 0, 100, 1));
+//        map.addItem(new Planet(30, 0, 100, 2));
+//        map.addItem(new Planet(42, 0, 100, 3));
+//        map.addItem(new Planet(56, 0, 100, 3));
+        cm.reset();
+        map.addItem(player = new Player(0, .2f * Globals.APP_HEIGHT/Globals.PIXELS_PER_METER));
 
         if(Globals.stage!=null){
             stage.clear();
             map.show(stage);
         }
+        stage.getRoot().addAction(Actions.fadeOut(0));
+        stage.getRoot().addAction(Actions.fadeIn(4));
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        Globals.stage = stage;
         Globals.inputManager = new InputManager();
         Gdx.input.setInputProcessor(Globals.inputManager);
 
-        map.show(stage);
+//        map.show(stage);
 
         //GridMap
 //        if (map == null) {
@@ -120,13 +127,14 @@ public class TestScreen extends AbstractScreen {
 //        }
 
         Globals.gridMap.update();
+        cm.update();
         focusOnPlayer();
     }
 
     private void focusOnPlayer() {
 //        cam.follow(player.getBody());
 //        Vector2 pos = player.getBody().getPosition();
-        cam.position.set(player.getBody().getPosition().x, 0, 0);
+        cam.position.set(player.getBody().getPosition().x, .5f * Globals.APP_HEIGHT/Globals.PIXELS_PER_METER, 0);
 
 //        float left = cam.position.x - cam.viewportWidth/2+padding, right = cam.position.x + cam.viewportWidth/2-padding;
 //        float bottom = cam.position.y - cam.viewportHeight/2+padding, top = cam.position.y + cam.viewportHeight/2-padding;

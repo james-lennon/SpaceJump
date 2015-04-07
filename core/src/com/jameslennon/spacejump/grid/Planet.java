@@ -11,25 +11,27 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.util.ImageManager;
-import sun.security.provider.ConfigFile;
 
 /**
  * Created by jameslennon on 4/2/15.
  */
 public class Planet extends Attractor {
 
-//    private Image outline;
+    //    private Image outline;
     private float planetRadius;
     private ShapeRenderer sr = new ShapeRenderer();
+    public static Color col = Color.BLACK;
 
     public Planet(float x, float y, float r, int spikes) {
         super(20, 2.5f * r);
         r /= Globals.PIXELS_PER_METER;
         planetRadius = r;
-        mass = .5f * MathUtils.PI * r * r;
+//        mass = .5f * MathUtils.PI * r * r;
+        mass = 20;
 
         img = new Image(ImageManager.getImage("circle"));
         img.setSize(2 * r, 2 * r);
+        img.setColor(col);
 
 //        outline = new Image(ImageManager.getImage("outline2"));
 //        outline.setSize(2 * radius, 2 * radius);
@@ -52,18 +54,18 @@ public class Planet extends Attractor {
         body = Globals.world.createBody(c);
         body.createFixture(fixture).setUserData(this);
 
-        for (int i=0; i<spikes; i++)addSpike(360.f * i/spikes);
+        for (int i = 0; i < spikes; i++) addSpike(360.f / spikes * (i + .5f));
     }
 
-    private void addSpike(float angle){
+    private void addSpike(float angle) {
 //        float angle = MathUtils.random(0,360);
         Spike s = new Spike(this, angle);
         Globals.gridMap.addItem(s);
     }
 
-    public void debug(boolean active){
-        if (active)img.setColor(Color.RED);
-        else img.setColor(Color.WHITE);
+    public void debug(boolean active) {
+        if (active) img.setColor(Color.RED);
+        else img.setColor(col);
     }
 
     @Override
@@ -82,14 +84,14 @@ public class Planet extends Attractor {
 
         sr.setProjectionMatrix(Globals.stage.getCamera().combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(Color.WHITE);
+        sr.setColor(col);
         sr.circle(getBody().getPosition().x,
                 getBody().getPosition().y,
                 radius);
         sr.end();
     }
 
-    public float getPlanetRadius(){
+    public float getPlanetRadius() {
         return planetRadius;
     }
 }

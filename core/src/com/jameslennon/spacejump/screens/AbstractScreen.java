@@ -1,6 +1,7 @@
 package com.jameslennon.spacejump.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +17,8 @@ import com.jameslennon.spacejump.util.Globals;
  * Created by jameslennon on 3/21/15.
  */
 public abstract class AbstractScreen implements Screen {
+
+    public static Color backgroundColor = Color.WHITE;
 
     protected final SpriteBatch batch;
     protected final Skin skin;
@@ -57,7 +60,7 @@ public abstract class AbstractScreen implements Screen {
     @Override
     public void render(float delta) {
 //        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1f);
-        Gdx.gl.glClearColor(0.f, 0.f, 0.f, 1f);
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
