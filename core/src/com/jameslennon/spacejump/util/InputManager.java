@@ -2,13 +2,9 @@ package com.jameslennon.spacejump.util;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.jameslennon.spacejump.grid.Planet;
 import com.jameslennon.spacejump.grid.Player;
-import com.jameslennon.spacejump.screens.TestScreen;
+import com.jameslennon.spacejump.screens.PlayScreen;
 
-/**
- * Created by jameslennon on 4/2/15.
- */
 public class InputManager extends InputAdapter{
 
     @Override
@@ -16,7 +12,7 @@ public class InputManager extends InputAdapter{
         if (keycode == Input.Keys.SPACE){
             Player.instance.jump();
         }else if (keycode == Input.Keys.ESCAPE){
-            TestScreen.instance.setup();
+            PlayScreen.instance.setup();
         }
         return true;
     }

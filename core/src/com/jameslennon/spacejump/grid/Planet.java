@@ -21,7 +21,7 @@ public class Planet extends Attractor {
     private float planetRadius;
 
     public Planet(float x, float y, float r, int spikes) {
-        super(20, 2.5f * r);
+        super(20, Math.max(2.5f * r, 130));
         r /= Globals.PIXELS_PER_METER;
         planetRadius = r;
 //        mass = .5f * MathUtils.PI * r * r;
@@ -30,6 +30,7 @@ public class Planet extends Attractor {
         img = new Image(ImageManager.getImage("circle"));
         img.setSize(2 * r, 2 * r);
         img.setColor(col);
+        img.setPosition(x,y);
 
 //        outline = new Image(ImageManager.getImage("outline2"));
 //        outline.setSize(2 * radius, 2 * radius);

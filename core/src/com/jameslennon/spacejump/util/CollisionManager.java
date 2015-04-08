@@ -3,9 +3,6 @@ package com.jameslennon.spacejump.util;
 import com.badlogic.gdx.physics.box2d.*;
 import com.jameslennon.spacejump.grid.GridItem;
 
-/**
- * Created by jameslennon on 3/21/15.
- */
 public class CollisionManager implements ContactListener {
 
     public CollisionManager() {
@@ -20,6 +17,7 @@ public class CollisionManager implements ContactListener {
                 && b.getUserData() instanceof GridItem) {
             GridItem ga = (GridItem) a.getUserData(), gb = (GridItem) b
                     .getUserData();
+            if (ga.isRemoved() || gb.isRemoved())return;
             // if(!ga.isDead() && !gb.isDead()){
             ga.collide(gb);
             gb.collide(ga);

@@ -1,19 +1,14 @@
 package com.jameslennon.spacejump;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.jameslennon.spacejump.screens.TestScreen;
+import com.jameslennon.spacejump.screens.GameOverScreen;
+import com.jameslennon.spacejump.screens.PlayScreen;
 import com.jameslennon.spacejump.screens.TitleScreen;
 import com.jameslennon.spacejump.util.Globals;
-import com.jameslennon.spacejump.util.ImageManager;
 import com.jameslennon.spacejump.util.UserData;
 
 import java.util.HashMap;
@@ -28,26 +23,28 @@ public class SpaceJump extends Game {
 	    screens = new HashMap<String, Screen>();
 
         //Load Stuff
-        setupScreens();
         UserData.load();
         Globals.componentLoader.load();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
                 Gdx.files.internal("layout/Roboto-Thin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 50;
-        BitmapFont font25 = generator.generateFont(parameter);
-        Globals.smallFont = font25;
+        Globals.smallFont = generator.generateFont(parameter);
         parameter.size = 150;
         Globals.bigFont = generator.generateFont(parameter);
+        parameter.size = 10;
+        Globals.tinyFont = generator.generateFont(parameter);
         generator.dispose();
 
-
+        //Handle screens
+        setupScreens();
         setScreen("title");
     }
 
     private void setupScreens(){
-        screens.put("play", new TestScreen());
+        screens.put("play", new PlayScreen());
         screens.put("title", new TitleScreen());
+        screens.put("gameover", new GameOverScreen());
     }
 
     public void setScreen(String name){

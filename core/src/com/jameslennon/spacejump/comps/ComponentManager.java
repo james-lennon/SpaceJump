@@ -7,14 +7,11 @@ import com.jameslennon.spacejump.util.Globals;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-/**
- * Created by jameslennon on 4/6/15.
- */
 public class ComponentManager {
 
     private ArrayDeque<Component> comps = new ArrayDeque<Component>();
     private int index;
-    private float padding = 300/Globals.PIXELS_PER_METER;
+    private float padding = 900/Globals.PIXELS_PER_METER;
 
     public void update(){
         if (Player.instance.isRemoved())return;
@@ -43,7 +40,7 @@ public class ComponentManager {
         while (true){
             comp = comps.peekLast();
             if (comp !=null && comp.offset>=x && comp.offset < x+padding){
-                comp.remove();
+//                comp.remove();
                 comps.removeLast();
             }else {
                 break;

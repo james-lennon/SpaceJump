@@ -3,7 +3,9 @@ package com.jameslennon.spacejump.grid;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.jameslennon.spacejump.comps.Component;
 import com.jameslennon.spacejump.util.Globals;
 
 import java.util.ArrayList;
@@ -13,10 +15,12 @@ import java.util.ArrayList;
  */
 public class GridMap {
 
+    public Vector2 spawnPoint;
     private ArrayList<GridItem> items, itemsToRemove;
     private ArrayList<Body> bodiesToRemove;
     private ArrayList<Explosion> explosions;
-    public Vector2 spawnPoint;
+
+    private Group group;
 
     public GridMap() {
         items = new ArrayList<GridItem>();
@@ -67,23 +71,23 @@ public class GridMap {
         }
         bodiesToRemove.clear();
         for (int i = 0; i < items.size(); i++) {
-            if (!items.get(i).isRemoved())
-                items.get(i).update();
+//            if (!items.get(i).isRemoved())
+//                items.get(i).update();
 
-            //TODO: remove items off screen
-            /*
-            float offset = items.get(i).body.getPosition().y
-                    - GameManager.getY();
-            int distance = 6;
-            if ((offset >= -distance * Tile.WIDTH && offset <= distance
-                    * Tile.WIDTH)
-                    || items.get(i) instanceof Ball) {
-                items.get(i).setVisible(true);
-                items.get(i).update();
+            float offset = items.get(i).getBody().getPosition().x
+                    - Player.instance.getX();
+            int distance = 2;
+            if ((offset >= -distance * Component.WIDTH && offset <= distance
+                    * Component.WIDTH)
+                    || items.get(i) instanceof Player) {
+                if (!items.get(i).isRemoved()) {
+                    items.get(i).setVisible(true);
+                    items.get(i).update();
+                }
             } else {
                 items.get(i).setVisible(false);
             }
-            */
+
         }
 
     }
@@ -106,7 +110,7 @@ public class GridMap {
     public void removeItem(GridItem g) {
         itemsToRemove.add(g);
         removeBody(g.body);
-        g.body = null;
+//        g.body = null;
         g.img.remove();
         g.setRemoved(true);
     }

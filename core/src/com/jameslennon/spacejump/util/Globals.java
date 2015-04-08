@@ -30,7 +30,7 @@ public class Globals {
     public static InputManager inputManager = new InputManager();
     public static ComponentLoader componentLoader = new ComponentLoader();
 
-    public static BitmapFont bigFont, smallFont;
+    public static BitmapFont bigFont, smallFont, tinyFont;
     public static ComponentManager compManager;
 
     public static void scaleImage(Image img){

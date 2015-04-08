@@ -1,10 +1,5 @@
 package com.jameslennon.spacejump.grid;
 
-/**
- * Created by jameslennon on 3/21/15.
- */
-
-
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -79,12 +74,13 @@ public abstract class GridItem {
         if(b!=visible){
             visible = b;
             if(b){
-                if (img != null)
-                    stage.addActor(img);
+                img.setVisible(true);
+//                if (img != null)
+//                    stage.addActor(img);
             }else{
                 if(img!=null){
                     img.setVisible(false);
-                    img.remove();
+//                    img.remove();
                 }
             }
         }

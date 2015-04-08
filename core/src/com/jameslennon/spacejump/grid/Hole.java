@@ -13,16 +13,16 @@ import com.jameslennon.spacejump.util.ImageManager;
  */
 public class Hole extends Attractor {
 
-    private float imgRadius = 50 / Globals.PIXELS_PER_METER, holeRadius = 30 / Globals.PIXELS_PER_METER;
+    private float imgRadius = 20 / Globals.PIXELS_PER_METER, holeRadius = 10 / Globals.PIXELS_PER_METER;
 
     public Hole(float x, float y) {
-        super(30, 300);
+        super(15, 200);
 
         img = new Image(ImageManager.getImage("spiral"));
         img.setSize(2 * imgRadius, 2 * imgRadius);
         img.setColor(Attractor.col);
         img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);
-        img.setPosition(x, y);
+        img.setPosition(x-imgRadius, y-imgRadius);
 
         BodyDef c = new BodyDef();
         c.type = BodyDef.BodyType.StaticBody;
