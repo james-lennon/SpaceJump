@@ -88,9 +88,13 @@ public class Player extends GridItem {
         pea2.setPosition(getBody().getPosition().x + pOff.x, getBody().getPosition().y + pOff.y);
 
         float y = body.getPosition().y;
-        if ((y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding || getX() < -40) && !isInOrbit) {
-            die();
-            return;
+        if ((y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding || getX() < -40)) {
+            if (isInOrbit){
+                body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, -body.getLinearVelocity().y));
+            }else {
+                die();
+                return;
+            }
         }
 
         Vector2 vel = getBody().getLinearVelocity();
@@ -131,7 +135,7 @@ public class Player extends GridItem {
 
     @Override
     public void collide(GridItem other) {
-        if (didBoost && !isBoosting()) {
+        if (didBoost) {
             body.setLinearVelocity(new Vector2(0, 0));
             didBoost = false;
         }
@@ -214,7 +218,8 @@ public class Player extends GridItem {
     }
 
     public boolean isBoosting() {
-        return System.currentTimeMillis() - boostTime < 100;
+//        return System.currentTimeMillis() - boostTime < 100;
+        return didBoost;
     }
 
     @Override

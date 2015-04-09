@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -16,10 +17,7 @@ import com.jameslennon.spacejump.comps.Component;
 import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
 import com.jameslennon.spacejump.grid.Player;
-import com.jameslennon.spacejump.util.ActionCam;
-import com.jameslennon.spacejump.util.CollisionManager;
-import com.jameslennon.spacejump.util.Globals;
-import com.jameslennon.spacejump.util.InputManager;
+import com.jameslennon.spacejump.util.*;
 
 /**
  * Created by jameslennon on 3/21/15.
@@ -41,6 +39,7 @@ public class PlayScreen extends AbstractScreen {
 
     private Label.LabelStyle style, smallStyle;
     private Label scoreLabel, playLabel;
+    private Image retryImg;
 
     public PlayScreen() {
         super();
@@ -104,6 +103,13 @@ public class PlayScreen extends AbstractScreen {
         playLabel.addAction(Actions.fadeOut(0));
         stage.addActor(playLabel);
 
+        retryImg = new Image(ImageManager.getImage("retry"));
+        retryImg.setSize(retryImg.getWidth() / Globals.PIXELS_PER_METER, retryImg.getHeight() / Globals.PIXELS_PER_METER);
+        retryImg.setColor(Color.BLACK);
+        retryImg.setY(Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER - retryImg.getHeight() / 2);
+        retryImg.addAction(Actions.fadeOut(0));
+        stage.addActor(retryImg);
+
         state = PLAYING;
     }
 
@@ -141,6 +147,7 @@ public class PlayScreen extends AbstractScreen {
                 scoreLabel.setPosition(score * Component.WIDTH, 0);//Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER);
 
                 playLabel.setPosition(player.getX() - playLabel.getWidth(), Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER);
+                retryImg.setX(player.getX()-retryImg.getWidth()/2);
 
 //                Globals.gridMap.update();
             }
@@ -154,7 +161,7 @@ public class PlayScreen extends AbstractScreen {
     private void endGame() {
         state = OVER;
         map.group.addAction(Actions.fadeOut(2));
-        playLabel.addAction(Actions.fadeIn(2));
+        retryImg.addAction(Actions.fadeIn(2));
         scoreLabel.addAction(Actions.moveTo(cam.position.x - scoreLabel.getWidth() / 2, 0, .5f));
 
         stage.addListener(new ClickListener() {

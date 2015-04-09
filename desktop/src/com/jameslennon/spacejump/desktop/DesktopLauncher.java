@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = Globals.APP_WIDTH;
         config.height = Globals.APP_HEIGHT;
+		config.samples = 2;
 		new LwjglApplication(new SpaceJump(), config);
 	}
 }

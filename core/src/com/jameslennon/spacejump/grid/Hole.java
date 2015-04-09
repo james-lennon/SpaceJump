@@ -22,7 +22,7 @@ public class Hole extends Attractor {
         img.setSize(2 * imgRadius, 2 * imgRadius);
         img.setColor(Attractor.col);
         img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);
-        img.setPosition(x-imgRadius, y-imgRadius);
+        img.setPosition(x - imgRadius, y - imgRadius);
 
         BodyDef c = new BodyDef();
         c.type = BodyDef.BodyType.StaticBody;
@@ -43,7 +43,12 @@ public class Hole extends Attractor {
     @Override
     public void collide(GridItem other) {
         if (other instanceof Player) {
-            other.die();
+            Player p = (Player) other;
+            if (p.isBoosting()) {
+                p.getBody().setTransform(new Vector2(p.getBody().getPosition()).add(0, 4), p.getBody().getAngle());
+            } else {
+                other.die();
+            }
         }
     }
 }
