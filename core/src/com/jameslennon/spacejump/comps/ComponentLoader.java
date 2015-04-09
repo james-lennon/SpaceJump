@@ -47,4 +47,8 @@ public class ComponentLoader {
         return new Component(lis.get(MathUtils.random(lis.size()-1)), map, off);
     }
 
+    public int difficulties(){
+        return data.size();
+    }
+
 }

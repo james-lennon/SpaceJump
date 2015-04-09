@@ -1,6 +1,7 @@
 package com.jameslennon.spacejump.grid;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jameslennon.spacejump.util.Globals;
@@ -16,11 +17,11 @@ public abstract class GridItem {
         return body;
     }
 
-    public void show(Stage s) {
+    public void show(Group g, Stage s) {
         stage = s;
 //
 		if (img != null)
-			s.addActor(img);
+			g.addActor(img);
         // img.setZIndex(105);
     }
 

@@ -1,27 +1,31 @@
 package com.jameslennon.spacejump.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.jameslennon.spacejump.comps.Component;
 import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
 import com.jameslennon.spacejump.grid.Player;
-import com.jameslennon.spacejump.util.*;
+import com.jameslennon.spacejump.util.ActionCam;
+import com.jameslennon.spacejump.util.CollisionManager;
+import com.jameslennon.spacejump.util.Globals;
+import com.jameslennon.spacejump.util.InputManager;
 
 /**
  * Created by jameslennon on 3/21/15.
  */
 public class PlayScreen extends AbstractScreen {
+    private final static int PLAYING = 0, ENDING = 1, OVER = 2, RESTART = 3;
 
     public static PlayScreen instance;
 
@@ -31,11 +35,12 @@ public class PlayScreen extends AbstractScreen {
     private ActionCam cam;
     private ComponentManager cm;
     private float score;
+    private int state;
 
     private Box2DDebugRenderer debugRenderer;
 
-    private Label.LabelStyle style;
-    private Label scoreLabel;
+    private Label.LabelStyle style, smallStyle;
+    private Label scoreLabel, playLabel;
 
     public PlayScreen() {
         super();
@@ -56,6 +61,7 @@ public class PlayScreen extends AbstractScreen {
         super.show();
         Globals.stage = stage;
         style = new Label.LabelStyle(Globals.bigFont, Color.BLACK);
+        smallStyle = new Label.LabelStyle(Globals.smallFont, Color.BLACK);
         setup();
     }
 
@@ -86,16 +92,26 @@ public class PlayScreen extends AbstractScreen {
         scoreLabel = new Label("0", style);
         scoreLabel.setColor(Color.BLACK);
         scoreLabel.setFontScale(1 / Globals.PIXELS_PER_METER);
-        scoreLabel.setSize(2,0);
+        scoreLabel.setSize(scoreLabel.getWidth() / Globals.PIXELS_PER_METER, scoreLabel.getHeight() / Globals.PIXELS_PER_METER);
         scoreLabel.setPosition(0, 0);
         stage.addActor(scoreLabel);
+
+        playLabel = new Label("tap to retry", smallStyle);
+        playLabel.setColor(Color.BLACK);
+        playLabel.setFontScale(1 / Globals.PIXELS_PER_METER);
+        playLabel.setSize(playLabel.getWidth() / Globals.PIXELS_PER_METER, playLabel.getHeight() / Globals.PIXELS_PER_METER);
+        playLabel.setPosition(0, 0);
+        playLabel.addAction(Actions.fadeOut(0));
+        stage.addActor(playLabel);
+
+        state = PLAYING;
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         Globals.inputManager = new InputManager();
-        Gdx.input.setInputProcessor(Globals.inputManager);
+        Gdx.input.setInputProcessor(new InputMultiplexer(stage, Globals.inputManager));
     }
 
     @Override
@@ -111,13 +127,23 @@ public class PlayScreen extends AbstractScreen {
 //            worldInstance.step(1f / 60f, 6, 2);
 //        }
 
-        if (player.isRemoved()) {
+        if (state == RESTART) {
+            setup();
+        }
+
+        if (state == PLAYING) {
+            if (player.isRemoved()) {
 //            setup();
-            endGame();
-        }else {
-            score = Math.max(score, player.getX() / Component.WIDTH);
-            scoreLabel.setText(String.format("%.3f", score));
-            scoreLabel.setPosition(score * Component.WIDTH, 1.5f);//Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER);
+                endGame();
+            } else {
+                score = Math.max(score, player.getX() / Component.WIDTH);
+                scoreLabel.setText(String.format("%.3f", score));
+                scoreLabel.setPosition(score * Component.WIDTH, 0);//Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER);
+
+                playLabel.setPosition(player.getX() - playLabel.getWidth(), Globals.APP_HEIGHT / 2 / Globals.PIXELS_PER_METER);
+
+//                Globals.gridMap.update();
+            }
         }
 
         Globals.gridMap.update();
@@ -126,7 +152,19 @@ public class PlayScreen extends AbstractScreen {
     }
 
     private void endGame() {
-        stage.addAction(Actions.fadeIn(4));
+        state = OVER;
+        map.group.addAction(Actions.fadeOut(2));
+        playLabel.addAction(Actions.fadeIn(2));
+        scoreLabel.addAction(Actions.moveTo(cam.position.x - scoreLabel.getWidth() / 2, 0, .5f));
+
+        stage.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                state = RESTART;
+                stage.removeListener(this);
+                return true;
+            }
+        });
 //        ImageManager.saveScreenshot(Gdx.files.external("orbyte.png"));
 //        ImageManager.getScreenshot();
 //        GameOverScreen.score = score;
@@ -134,10 +172,11 @@ public class PlayScreen extends AbstractScreen {
     }
 
     private void focusOnPlayer() {
-//        cam.follow(player.getBody());
 //        Vector2 pos = player.getBody().getPosition();
-        if (!player.isRemoved())
+        if (!player.isRemoved()) {
             cam.position.set(player.getBody().getPosition().x, .5f * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER, 0);
+//            cam.follow(player.getBody());
+        }
     }
 
     @Override

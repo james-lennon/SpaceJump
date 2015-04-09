@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -69,10 +70,10 @@ public class Player extends GridItem {
     }
 
     @Override
-    public void show(Stage s) {
-        super.show(s);
-        s.addActor(pea1);
-        s.addActor(pea2);
+    public void show(Group g, Stage s) {
+        super.show(g,s);
+        g.addActor(pea1);
+        g.addActor(pea2);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class Player extends GridItem {
         pea2.setPosition(getBody().getPosition().x + pOff.x, getBody().getPosition().y + pOff.y);
 
         float y = body.getPosition().y;
-        if (y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding) {
+        if ((y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding || getX() < -40) && !isInOrbit) {
             die();
             return;
         }
@@ -121,7 +122,7 @@ public class Player extends GridItem {
         if (isInOrbit && pivot.getBody() != null) {
             Vector2 offset = new Vector2(body.getPosition()).sub(pivot.getBody().getPosition());
             if (System.currentTimeMillis() - orbitTime >= 1000 && (offset.angle() <70 || offset.angle() > 290)) { //MathUtils.isEqual(offset.angle(), orbitAngle, 7f) &&
-                boost(15);
+                boost(20);
                 Globals.compManager.onBoost();
                 orbitTime = System.currentTimeMillis();
             }
@@ -137,7 +138,7 @@ public class Player extends GridItem {
         if (other instanceof Planet) {
             isOnPlanet = true;
             ground = (Planet) other;
-            System.out.println("reset "+MathUtils.random());
+//            System.out.println("reset "+MathUtils.random());
             groundTime = System.currentTimeMillis();
             orbitAngle = new Vector2(body.getPosition()).sub(ground.getBody().getPosition()).angle();
             orbitTime = System.currentTimeMillis();

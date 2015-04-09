@@ -1,12 +1,11 @@
 package com.jameslennon.spacejump.grid;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jameslennon.spacejump.util.Globals;
@@ -68,8 +67,8 @@ public class Planet extends Attractor {
     }
 
     @Override
-    public void show(Stage s) {
-        super.show(s);
+    public void show(Group g, Stage s) {
+        super.show(g,s);
 //        s.addActor(outline);
     }
 

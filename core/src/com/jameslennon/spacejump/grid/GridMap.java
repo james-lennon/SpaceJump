@@ -20,13 +20,14 @@ public class GridMap {
     private ArrayList<Body> bodiesToRemove;
     private ArrayList<Explosion> explosions;
 
-    private Group group;
+    public Group group;
 
     public GridMap() {
         items = new ArrayList<GridItem>();
         itemsToRemove = new ArrayList<GridItem>();
         bodiesToRemove = new ArrayList<Body>();
         explosions = new ArrayList<Explosion>();
+        group = new Group();
     }
 
     public void load(Level level) {
@@ -93,14 +94,15 @@ public class GridMap {
     }
 
     public void addItem(GridItem gi) {
-        gi.show(Globals.stage);
+        gi.show(group, Globals.stage);
         items.add(gi);
     }
 
     public void show(Stage s) {
-        for (GridItem gi : items) {
-            gi.show(s);
-        }
+//        for (GridItem gi : items) {
+//            gi.show(s);
+//        }
+        s.addActor(group);
     }
 
     public void remove() {

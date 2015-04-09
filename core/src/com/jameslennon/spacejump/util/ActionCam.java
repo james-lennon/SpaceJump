@@ -156,8 +156,9 @@ public class ActionCam extends OrthographicCamera {
         Vector3 pos = new Vector3(b.getPosition(), 0);
         Vector2 vel = b.getLinearVelocity();
 //        Globals.stage.getCamera().project(pos);
-        position.x = pos.x - vel.x;// *50;
-        position.y = pos.y - vel.y;
+        position.x = pos.x - vel.x / Globals.PIXELS_PER_METER;
+//        position.y = pos.y - vel.y;
+        position.y = .5f * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER;
         if (shaking)
             processShake(delta);
 //        lerp.x = pos.x - vel.x;
