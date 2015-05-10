@@ -44,8 +44,8 @@ public class Hole extends Attractor {
     public void collide(GridItem other) {
         if (other instanceof Player) {
             Player p = (Player) other;
-            if (p.isBoosting()) {
-                p.getBody().setTransform(new Vector2(p.getBody().getPosition()).add(0, 4), p.getBody().getAngle());
+            if (p.didBoost()) {
+                die();
             } else {
                 other.die();
             }

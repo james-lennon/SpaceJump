@@ -89,7 +89,7 @@ public class Player extends GridItem {
 
         float y = body.getPosition().y;
         if ((y < -padding || y > Globals.APP_HEIGHT / Globals.PIXELS_PER_METER + padding || getX() < -40)) {
-            if (isInOrbit){
+            if (isInOrbit || didBoost){
                 body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, -body.getLinearVelocity().y));
             }else {
                 die();
@@ -125,7 +125,7 @@ public class Player extends GridItem {
 
         if (isInOrbit && pivot.getBody() != null) {
             Vector2 offset = new Vector2(body.getPosition()).sub(pivot.getBody().getPosition());
-            if (System.currentTimeMillis() - orbitTime >= 1000 && (offset.angle() <70 || offset.angle() > 290)) { //MathUtils.isEqual(offset.angle(), orbitAngle, 7f) &&
+            if (System.currentTimeMillis() - orbitTime >= 900 && (offset.angle() <70 || offset.angle() > 290)) { //MathUtils.isEqual(offset.angle(), orbitAngle, 7f) &&
                 boost(20);
                 Globals.compManager.onBoost();
                 orbitTime = System.currentTimeMillis();
@@ -135,11 +135,11 @@ public class Player extends GridItem {
 
     @Override
     public void collide(GridItem other) {
-        if (didBoost) {
-            body.setLinearVelocity(new Vector2(0, 0));
-            didBoost = false;
-        }
         if (other instanceof Planet) {
+            if (didBoost) {
+                body.setLinearVelocity(new Vector2(0, 0));
+                didBoost = false;
+            }
             isOnPlanet = true;
             ground = (Planet) other;
 //            System.out.println("reset "+MathUtils.random());
@@ -219,7 +219,7 @@ public class Player extends GridItem {
 
     public boolean isBoosting() {
 //        return System.currentTimeMillis() - boostTime < 100;
-        return didBoost;
+        return didBoost && System.currentTimeMillis() - boostTime < 2000;
     }
 
     @Override
@@ -235,5 +235,9 @@ public class Player extends GridItem {
         e.getVelocity().setHigh(e.getVelocity().getHighMax() / Globals.PIXELS_PER_METER);
         ParticleEffectActor pea = new ParticleEffectActor(pe, body.getPosition().x, body.getPosition().y);
         Globals.stage.addActor(pea);
+    }
+
+    public boolean didBoost(){
+        return didBoost;
     }
 }

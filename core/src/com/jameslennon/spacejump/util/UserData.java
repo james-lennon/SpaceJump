@@ -22,6 +22,10 @@ public class UserData {
         coins.setName("coins");
         progress.next = coins;
 
+        JsonValue score = new JsonValue(0.f);
+        score.setName("highscore");
+        coins.next = score;
+
         return val;
     }
 
@@ -47,6 +51,17 @@ public class UserData {
 
     public static void setProgress(int p) {
         data.get("progress").set(p);
+    }
+
+    public static float getHighScore() {
+        if (data.has("highscore"))
+            return data.getFloat("highscore");
+        return 0;
+    }
+
+    public static void setHighScore(float s) {
+        data.get("highscore").set(s);
+        save();
     }
 
     public static void save() {

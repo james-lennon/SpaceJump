@@ -9,8 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.jameslennon.spacejump.comps.ComponentLoader;
 import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
-import com.jameslennon.spacejump.util.InputManager;
 import com.jameslennon.spacejump.SpaceJump;
+import com.jameslennon.spacejump.util.handlers.AdHandler;
+import com.jameslennon.spacejump.util.handlers.LeaderboardHandler;
 
 /**
  * Created by jameslennon on 3/21/15.
@@ -18,8 +19,10 @@ import com.jameslennon.spacejump.SpaceJump;
 public class Globals {
 
     public static final float PIXELS_PER_METER = 30;
-    public static final int APP_WIDTH = 800;
-    public static final int APP_HEIGHT = 500;
+//    public static final int APP_WIDTH = 800;
+//    public static final int APP_HEIGHT = 500;
+    public static final int APP_WIDTH = 1136;
+    public static final int APP_HEIGHT = 640;
     public static final int TILE_WIDTH = 50;
 
     public static World world;
@@ -30,7 +33,7 @@ public class Globals {
     public static InputManager inputManager = new InputManager();
     public static ComponentLoader componentLoader = new ComponentLoader();
 
-    public static BitmapFont bigFont, smallFont, tinyFont;
+    public static BitmapFont bigFont, smallFont, tinyFont, hugeFont;
     public static ComponentManager compManager;
 
     public static void scaleImage(Image img){

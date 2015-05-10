@@ -33,7 +33,7 @@ public class ComponentManager {
 
     private void addComp(){
         int d = getDifficulty();
-        System.out.println(d);
+//        System.out.println(d);
         comps.add(Globals.componentLoader.addComponent(d, index++, Globals.gridMap));
     }
 
