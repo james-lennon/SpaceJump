@@ -22,12 +22,14 @@ public class IosAchievements extends AchievementManager {
         aMap.put(30f, "pass_thirty");
         aMap.put(40f, "pass_forty");
         aMap.put(60f, "pass_60");
-        aMap.put(5f, "pass_five");
+        aMap.put(80f, "pass_eighty");
+        aMap.put(99f, "pass_99");
     }
 
     @Override
     public void handleScore(float score) {
-        Map.Entry<Float,String> e = aMap.ceilingEntry(score);
-        SpaceJump.leaderboard.addAchievement(e.getValue());
+        Map.Entry<Float, String> e = aMap.floorEntry(score);
+        if (e != null)
+            SpaceJump.leaderboard.addAchievement(e.getValue());
     }
 }

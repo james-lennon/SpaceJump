@@ -18,7 +18,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         config.multisample = GLKViewDrawableMultisample._4X;
+
         SpaceJump.leaderboard = new GameCenterHandler();
+        SpaceJump.ads = new IosAdHandler();
+        SpaceJump.achievements = new IosAchievements();
+
         return new IOSApplication(new SpaceJump(), config);
     }
 

@@ -51,5 +51,6 @@
     <framework>AVFoundation</framework>
     <framework>StoreKit</framework>
     <framework>Foundation</framework>
+    <framework>Chartboost</framework>
   </frameworks>
 </config>

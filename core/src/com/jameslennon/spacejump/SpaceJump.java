@@ -47,8 +47,8 @@ public class SpaceJump extends Game {
         generator.dispose();
 
         leaderboard.init();
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA_SATURATE, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        ads.init();
+        achievements.init();
 
         //Handle screens
         setupScreens();

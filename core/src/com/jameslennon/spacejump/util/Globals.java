@@ -6,12 +6,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.jameslennon.spacejump.SpaceJump;
 import com.jameslennon.spacejump.comps.ComponentLoader;
 import com.jameslennon.spacejump.comps.ComponentManager;
 import com.jameslennon.spacejump.grid.GridMap;
-import com.jameslennon.spacejump.SpaceJump;
-import com.jameslennon.spacejump.util.handlers.AdHandler;
-import com.jameslennon.spacejump.util.handlers.LeaderboardHandler;
 
 /**
  * Created by jameslennon on 3/21/15.
@@ -19,7 +17,7 @@ import com.jameslennon.spacejump.util.handlers.LeaderboardHandler;
 public class Globals {
 
     public static final float PIXELS_PER_METER = 30;
-//    public static final int APP_WIDTH = 800;
+    //    public static final int APP_WIDTH = 800;
 //    public static final int APP_HEIGHT = 500;
     public static final int APP_WIDTH = 1136;
     public static final int APP_HEIGHT = 640;
@@ -36,8 +34,8 @@ public class Globals {
     public static BitmapFont bigFont, smallFont, tinyFont, hugeFont;
     public static ComponentManager compManager;
 
-    public static void scaleImage(Image img){
-        img.setSize(img.getWidth()/Globals.PIXELS_PER_METER, img.getHeight()/Globals.PIXELS_PER_METER);
+    public static void scaleImage(Image img) {
+        img.setSize(img.getWidth() / Globals.PIXELS_PER_METER, img.getHeight() / Globals.PIXELS_PER_METER);
     }
 
 }

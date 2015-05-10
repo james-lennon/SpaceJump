@@ -17,6 +17,6 @@ public class IosAdHandler extends AdHandler {
 
     @Override
     public void show() {
-        super.show();
+        Chartboost.showInterstitial("Game Over");
     }
 }

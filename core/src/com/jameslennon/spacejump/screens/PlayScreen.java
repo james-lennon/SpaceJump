@@ -202,7 +202,8 @@ public class PlayScreen extends AbstractScreen {
 //        retryImg.addAction(Actions.fadeIn(2));
         scoreLabel.addAction(Actions.moveTo(cam.position.x - scoreLabel.getWidth() * 2, 0, .5f));
 //        backImg.addAction(Actions.moveTo(cam.position.x - backImg.getWidth() / 2, backImg.getY(), .5f));
-        buttons.addAction(Actions.moveTo(cam.position.x - buttons.getWidth() / 2, buttons.getY(), .5f));
+        buttons.addAction(Actions.sequence(Actions.delay(.5f),
+                Actions.moveTo(cam.position.x - buttons.getWidth() / 2, buttons.getY(), .5f)));
 
         stage.addListener(new ClickListener() {
             @Override
@@ -218,8 +219,8 @@ public class PlayScreen extends AbstractScreen {
             highScoreLabel.addAction(Actions.fadeIn(.5f));
             UserData.setHighScore(score);
             SpaceJump.leaderboard.addScore(score);
-        }else {
-            if (adCount % 5 == 2) {
+        } else {
+            if (adCount % 4 == 2) {
                 SpaceJump.ads.show();
             }
             adCount++;
