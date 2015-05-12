@@ -26,6 +26,10 @@ public class UserData {
         score.setName("highscore");
         coins.next = score;
 
+        JsonValue total = new JsonValue(0.f);
+        total.setName("total");
+        score.next = total;
+
         return val;
     }
 
@@ -80,6 +84,15 @@ public class UserData {
 
     public static void addProgress() {
         data.get("progress").set(getProgress() + 1);
+        save();
+    }
+
+    public static float getTotal(){
+        return data.getFloat("total");
+    }
+
+    public static void addDistance(float score){
+        data.get("total").set(getTotal()+score);
         save();
     }
 

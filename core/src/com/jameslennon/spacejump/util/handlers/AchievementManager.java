@@ -13,4 +13,7 @@ public class AchievementManager {
 
     }
 
+    public void handleEvent(String name){
+
+    }
 }

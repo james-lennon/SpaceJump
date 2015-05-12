@@ -13,9 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jameslennon.spacejump.SpaceJump;
 import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.util.ImageManager;
 import com.jameslennon.spacejump.util.ParticleEffectActor;
+
+import javax.xml.parsers.SAXParser;
 
 /**
  * Created by jameslennon on 4/2/15.
@@ -93,6 +96,9 @@ public class Player extends GridItem {
                 body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, -body.getLinearVelocity().y));
             }else {
                 die();
+                if (y < -padding){
+                    SpaceJump.achievements.handleEvent("BackWall");
+                }
                 return;
             }
         }

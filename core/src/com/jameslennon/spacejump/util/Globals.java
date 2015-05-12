@@ -30,6 +30,7 @@ public class Globals {
     public static Skin skin = new Skin(Gdx.files.internal("layout/uiskin.json"));
     public static InputManager inputManager = new InputManager();
     public static ComponentLoader componentLoader = new ComponentLoader();
+    public static boolean showSpikes = false;
 
     public static BitmapFont bigFont, smallFont, tinyFont, hugeFont;
     public static ComponentManager compManager;

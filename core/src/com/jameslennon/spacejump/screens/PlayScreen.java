@@ -199,9 +199,7 @@ public class PlayScreen extends AbstractScreen {
     private void endGame() {
         state = OVER;
         map.group.addAction(Actions.fadeOut(2));
-//        retryImg.addAction(Actions.fadeIn(2));
         scoreLabel.addAction(Actions.moveTo(cam.position.x - scoreLabel.getWidth() * 2, 0, .5f));
-//        backImg.addAction(Actions.moveTo(cam.position.x - backImg.getWidth() / 2, backImg.getY(), .5f));
         buttons.addAction(Actions.sequence(Actions.delay(.5f),
                 Actions.moveTo(cam.position.x - buttons.getWidth() / 2, buttons.getY(), .5f)));
 
@@ -220,11 +218,12 @@ public class PlayScreen extends AbstractScreen {
             UserData.setHighScore(score);
             SpaceJump.leaderboard.addScore(score);
         } else {
-            if (adCount % 4 == 2) {
+            if (adCount % 6 == 2) {
                 SpaceJump.ads.show();
             }
             adCount++;
         }
+        UserData.addDistance(score);
         SpaceJump.achievements.handleScore(score);
 
 //        ImageManager.saveScreenshot(Gdx.files.external("orbyte.png"));

@@ -39,7 +39,11 @@ public class Component {
         float x = offset + (float) value.getDouble("x") * WIDTH,
                 y = (float) value.getDouble("y") * Globals.APP_HEIGHT / Globals.PIXELS_PER_METER;
         if (type.equals("p")) {
-            return new Planet(x, y, (float) value.getDouble("r"), 0);
+            int spikes = 0;
+            if (Globals.showSpikes){
+                spikes = (int) (Math.random()*4);
+            }
+            return new Planet(x, y, (float) value.getDouble("r"), spikes);
         } else if (type.equals("h")) {
             return new Hole(x,y);
         }
