@@ -66,6 +66,7 @@ public class PlayScreen extends AbstractScreen {
         Globals.stage = stage;
         style = new Label.LabelStyle(Globals.bigFont, Color.BLACK);
         smallStyle = new Label.LabelStyle(Globals.smallFont, Color.BLACK);
+        Globals.music.playGame();
         setup();
     }
 

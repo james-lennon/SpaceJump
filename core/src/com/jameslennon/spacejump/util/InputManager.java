@@ -2,6 +2,7 @@ package com.jameslennon.spacejump.util;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.jameslennon.spacejump.SpaceJump;
 import com.jameslennon.spacejump.grid.Player;
 import com.jameslennon.spacejump.screens.PlayScreen;
 
@@ -42,6 +43,7 @@ public class InputManager extends InputAdapter {
         }
         if (tapCount>=10){
             Globals.showSpikes = true;
+            SpaceJump.achievements.handleEvent("EasterEgg");
         }
         lastTap = System.currentTimeMillis();
         return true;

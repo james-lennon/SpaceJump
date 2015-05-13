@@ -49,6 +49,8 @@ public class IosAchievements extends AchievementManager {
         if (name.equals("BackWall")){
             System.out.println("back wall achievement");
             SpaceJump.leaderboard.addAchievement("back_wall");
+        }else if (name.equals("EasterEgg")){
+            SpaceJump.leaderboard.addAchievement("easter_egg");
         }
     }
 }

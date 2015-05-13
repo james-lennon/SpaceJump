@@ -24,6 +24,7 @@ public class TitleScreen extends AbstractScreen {
     @Override
     public void show() {
         super.show();
+        Globals.music.playMenu();
         SpaceJump.leaderboard.connect();
     }
 
@@ -42,10 +43,16 @@ public class TitleScreen extends AbstractScreen {
         Label tap = new Label("tap to play", style2);
         t.add(tap).center().padBottom(80).row();
         t.setFillParent(true);
+        t.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Globals.game.setScreen("play");
+            }
+        });
         stage.addActor(t);
 
         Label record = new Label("record: " + String.format("%.3f", UserData.getHighScore()), style3);
-        record.setPosition(width - record.getWidth() - 10, 5);
+        record.setPosition(width - record.getWidth() - 10, 10);
         stage.addActor(record);
 
         Image leaderboard = new Image(ImageManager.getImage("game_center"));
@@ -61,12 +68,16 @@ public class TitleScreen extends AbstractScreen {
         });
         stage.addActor(leaderboard);
 
-        t.addListener(new ClickListener() {
+        Label tutorial = new Label("?", style2);
+        tutorial.setPosition(width - tutorial.getWidth() - 10, height - tutorial.getHeight() - 5);
+        tutorial.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Globals.game.setScreen("play");
+                Globals.game.setScreen("tutorial");
             }
         });
+        stage.addActor(tutorial);
+
 
 //        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new InputAdapter() {
 //            @Override
