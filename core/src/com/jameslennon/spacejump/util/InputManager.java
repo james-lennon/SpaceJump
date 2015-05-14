@@ -41,7 +41,7 @@ public class InputManager extends InputAdapter {
             tapCount = 0;
             System.out.println("reset");
         }
-        if (tapCount>=10){
+        if (tapCount>=10 && !Globals.showSpikes){
             Globals.showSpikes = true;
             SpaceJump.achievements.handleEvent("EasterEgg");
         }

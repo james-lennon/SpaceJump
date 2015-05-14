@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.jameslennon.spacejump.screens.GameOverScreen;
-import com.jameslennon.spacejump.screens.PlayScreen;
-import com.jameslennon.spacejump.screens.TitleScreen;
-import com.jameslennon.spacejump.screens.TutorialScreen;
+import com.jameslennon.spacejump.screens.*;
 import com.jameslennon.spacejump.util.handlers.AchievementManager;
 import com.jameslennon.spacejump.util.Globals;
 import com.jameslennon.spacejump.util.UserData;
@@ -28,6 +25,9 @@ public class SpaceJump extends Game {
     @Override
     public void create() {
         Globals.game = this;
+        Globals.APP_WIDTH = Gdx.graphics.getWidth();
+        Globals.APP_HEIGHT = Gdx.graphics.getHeight();
+
         screens = new HashMap<String, Screen>();
 
         //Load Stuff
@@ -66,6 +66,7 @@ public class SpaceJump extends Game {
         screens.put("title", new TitleScreen());
         screens.put("gameover", new GameOverScreen());
         screens.put("tutorial", new TutorialScreen());
+        screens.put("info", new InfoScreen());
     }
 
     public void setScreen(String name) {

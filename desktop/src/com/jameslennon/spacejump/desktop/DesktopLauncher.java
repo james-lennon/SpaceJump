@@ -8,8 +8,8 @@ import com.jameslennon.spacejump.util.Globals;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = Globals.APP_WIDTH;
-        config.height = Globals.APP_HEIGHT;
+        config.width = Globals.DEFAULT_WIDTH;
+        config.height = Globals.DEFAULT_HEIGHT;
 		config.samples = 2;
 		new LwjglApplication(new SpaceJump(), config);
 	}

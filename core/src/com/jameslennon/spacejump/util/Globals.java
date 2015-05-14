@@ -16,18 +16,22 @@ import com.jameslennon.spacejump.grid.GridMap;
  */
 public class Globals {
 
+
+
     public static final float PIXELS_PER_METER = 30;
     //    public static final int APP_WIDTH = 800;
 //    public static final int APP_HEIGHT = 500;
-    public static final int APP_WIDTH = 1136;
-    public static final int APP_HEIGHT = 640;
+    public static int APP_WIDTH = 1136;
+    public static int APP_HEIGHT = 640;
+    public static final int DEFAULT_WIDTH = 1136;
+    public static final int DEFAULT_HEIGHT = 640;
     public static final int TILE_WIDTH = 50;
 
     public static World world;
     public static Stage stage;
     public static GridMap gridMap;
     public static SpaceJump game;
-    public static Skin skin = new Skin(Gdx.files.internal("layout/uiskin.json"));
+    public static Skin skin;// = new Skin(Gdx.files.internal("layout/uiskin.json"));
     public static InputManager inputManager = new InputManager();
     public static ComponentLoader componentLoader = new ComponentLoader();
     public static MusicManager music = new MusicManager();

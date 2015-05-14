@@ -3,6 +3,7 @@ package com.jameslennon.spacejump.util;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonValue.ValueType;
@@ -29,6 +30,10 @@ public class UserData {
         JsonValue total = new JsonValue(0.f);
         total.setName("total");
         score.next = total;
+
+        JsonValue first = new JsonValue(true);
+        first.setName("first");
+        total.next = first;
 
         return val;
     }
@@ -93,6 +98,15 @@ public class UserData {
 
     public static void addDistance(float score){
         data.get("total").set(getTotal()+score);
+        save();
+    }
+
+    public static boolean isFirstRun(){
+        return data.getBoolean("first");
+    }
+
+    public static void setFirst(boolean val){
+        data.get("first").set(val);
         save();
     }
 
