@@ -1,0 +1,11 @@
+unzip IOSLauncher.ipa
+
+/usr/bin/codesign -d --entitlements :entitlements.plist Payload/IOSLauncher.app
+
+rm -r "Payload/IOSLauncher.app/_CodeSignature" "Payload/IOSLauncher.app/CodeResources" 2> /dev/null | true
+
+cp "Orbyte_App_Store.mobileprovision" "Payload/IOSLauncher.app/embedded.mobileprovision"
+
+/usr/bin/codesign -f -s "iPhone Distribution: James Lennon" --resource-rules "Payload/IOSLauncher.app/ResourceRules.plist" --entitlements entitlements.plist "Payload/IOSLauncher.app"
+
+zip -qr "IOSLauncher.resigned.ipa" Payload

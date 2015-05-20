@@ -1,5 +1,6 @@
 package com.jameslennon.spacejump;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -25,8 +26,10 @@ public class SpaceJump extends Game {
     @Override
     public void create() {
         Globals.game = this;
-        Globals.APP_WIDTH = Gdx.graphics.getWidth();
-        Globals.APP_HEIGHT = Gdx.graphics.getHeight();
+        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+            Globals.APP_WIDTH = Gdx.graphics.getWidth();
+            Globals.APP_HEIGHT = Gdx.graphics.getHeight();
+        }
 
         screens = new HashMap<String, Screen>();
 

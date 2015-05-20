@@ -1,5 +1,6 @@
 package com.jameslennon.spacejump.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -68,7 +69,7 @@ public class TitleScreen extends AbstractScreen {
         stage.addActor(t);
 
         Label record = new Label("record: " + String.format("%.3f", UserData.getHighScore()), style3);
-        record.setPosition(Gdx.graphics.getWidth() - record.getWidth() - 10, 10);
+        record.setPosition(Globals.APP_WIDTH - record.getWidth() - 10, 10);
         stage.addActor(record);
 
         Image leaderboard = new Image(ImageManager.getImage("game_center"));
@@ -82,10 +83,12 @@ public class TitleScreen extends AbstractScreen {
                 return true;
             }
         });
-        stage.addActor(leaderboard);
+        if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+            stage.addActor(leaderboard);
+        }
 
         Label tutorial = new Label("?", style2);
-        tutorial.setPosition(Gdx.graphics.getWidth() - tutorial.getWidth() - 10, Gdx.graphics.getHeight() - tutorial.getHeight() + 5);
+        tutorial.setPosition(Globals.APP_WIDTH - tutorial.getWidth() - 10, Globals.APP_HEIGHT - tutorial.getHeight() + 5);
         tutorial.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -96,7 +99,7 @@ public class TitleScreen extends AbstractScreen {
         stage.addActor(tutorial);
 
         Image info = new Image(ImageManager.getImage("info"));
-        info.setPosition(10, Gdx.graphics.getHeight() - info.getHeight() - 10);
+        info.setPosition(10, Globals.APP_HEIGHT - info.getHeight() - 10);
         info.addListener(new ClickListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
