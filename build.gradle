@@ -71,6 +71,22 @@ project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
 
+    robovm {
+        // Configure robovm
+
+        // test iphone 4s
+//        iosSignIdentity = "iPhone Developer: xxxxxx"
+//        iosProvisioningProfile = "iOSTeam Provisioning Profile:xxxxxx"
+
+        // release
+        iosSignIdentity = "iPhone Distribution: James Lennon (AB4XV24HJZ)"
+//        iosProvisioningProfile = "xxxxxxxxxx Distribution Provisioning Profile"
+
+        iosSkipSigning = false
+        stdoutFifo = null
+        stderrFifo = null
+    }
+
     configurations { natives }
 
     dependencies {
